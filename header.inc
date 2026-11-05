@@ -18,10 +18,11 @@
         <div id="headerAlignBottom">
             <h2>Building The Future Of Travel</h2>
             <nav>
-                <a href="index.html">Home</a>
-                <a href="jobs.html">Jobs</a>
-                <a href="apply.html">Apply</a>
-                <a href="about.html">About Us</a>
+                <a href="index.php">Home</a>
+                <a href="jobs.php">Jobs</a>
+                <a href="apply.php">Apply</a>
+                <a href="about.php">About Us</a>
+                <a href="manage.php">Manage</a>
             </nav>
         </div>
         <hr>
