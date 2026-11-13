@@ -1,3 +1,33 @@
+<?php
+require_once 'settings.php';
+
+$conn = mysqli_connect($host, $user, $pwd, $db);
+
+if (!$conn) die('Database connection failed: ' . mysqli_connect_error());
+mysqli_set_charset($conn, 'utf8mb4');
+
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+if ($search !== '') {
+    $safe = mysqli_real_escape_string($conn, $search);
+    $sql = "SELECT * FROM jobs 
+            WHERE `Title` LIKE '%$safe%' 
+               OR `description` LIKE '%$safe%'
+              OR `Reference Number` LIKE '%$safe%'
+              OR `Essential Requirements` LIKE '%$safe%'
+              OR `Responsibilities` LIKE '%$safe%'
+              OR `Preferred Qualifications` LIKE '%$safe%'
+              OR `Salary` LIKE '%$safe%'
+              OR `Reporting to` LIKE '%$safe%'
+            ORDER BY `Reference Number`";
+} else {
+    $sql = "SELECT * FROM jobs ORDER BY `Reference Number`";
+}
+
+$result = mysqli_query($conn, $sql);
+if (!$result) die('Query failed: ' . mysqli_error($conn));
+?>
+
 <!DOCTYPE html> 
 <html lang="en">
 <head>
@@ -28,98 +58,87 @@
     <section class="jobimages"></section>
     <h1 style="text-align: center;"><strong>Jobs</strong></h1>
     <h1>Join Travexa!!</h1>
+
+    <div id="search-area">
     <p style="font-size: 24px;">We create unforgettable journeys across countries. If you're passionate about travel and technology, we'd love to have you on our team!</p>
     <br>
     <h1>Current Job Openings</h1>
+
+    <form action="jobs.php#search-area" method="GET">
+        <label for="searchKeyword">Enter Keyword:</label>
+        <input type="text" id="searchKeyword" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="e.g., Data, TRV26">
+        <input type="submit" value="Search">
+        <?php if ($search !== ''): ?>
+            <a href="jobs.php#search-area" style="margin-left: 10px;">Clear Search</a>
+        <?php endif; ?>
+    </form>
+
+    <?php if ($search !== ''): ?>
+        <p style="margin-top: 15px; font-size: 18px;">Showing results for: <strong><?php echo htmlspecialchars($search); ?></strong></p>
+    <?php endif; ?>
+    <div>
     
+    <?php if (mysqli_num_rows($result) === 0): ?>
+    <p style="text-align: center; font-size: 20px;">No keyword found<?php echo $search !== '' ? ' for "' . htmlspecialchars($search) . '"' : ''; ?>.</p>
+    <?php else: ?>
+
+    <!--loop-->
+    <?php while ($row = mysqli_fetch_assoc($result)): ?>
+
     <section class="job-posting">
-        <div class="pill">Reference Number: TRV26</div>
-        <div class="accent-bar">
-            <h2><strong>Job Title: Data Engineer</strong></h2>
-            <p style="font-size: 22px;">Building and maintaining data pipelines that turn all flight, hotel, and booking events into insights for pricing, marketing, and operations teams</p>
+        <div class="pill">Reference Number: <?php echo htmlspecialchars($row['Reference Number']); ?></div>
+        <div class="<?php echo ($row['Reference Number'] == 'TRV26') ? 'accent-bar' : 'accent-bar4'; ?>">
+
+            <h2><strong>Job Title:<?php echo htmlspecialchars($row['Title']); ?></strong></h2>
+            <p style="font-size: 22px;"><?php echo htmlspecialchars($row['description']); ?></p>
         <hr>
             
             <div class="main-content">
                 <div class="accent-bar3">
                 <h3 >Responsibilities</h3>
                 <ol >
-                    <li>Design and maintain scalable data pipelines to process large volumes of data.</li>
-                    <li>Collaborate with teams to understand data requirements and deliver business solutions.</li>
-                    <li>Implement data quality checks, monitoring, and optimize storage for performance.</li>
-                    <li>Stay updated with emerging technologies and best practices in data engineering.</li>
+                   <?php foreach (explode("\n", $row['Responsibilities']) as $item): ?>
+                    <?php if (trim($item) !== ''): ?>
+                        <li><?php echo htmlspecialchars(trim($item)); ?></li>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
                 </ol>
                 <h3 >Essential Requirements</h3>
                 <ul >
-                    <li>Bachelor's degree in Computer Science, Data Engineering, or a related field.</li>
-                    <li>Proven experience as a Data Engineer or similar role, with a strong knowledge of ETL processes.</li>
-                    <li>Proficiency in programming languages such as Python, Java, or Scala.</li>
-                    <li>Experience with big data technologies (e.g., Hadoop, Spark) and cloud platforms (e.g., AWS, GCP, Azure).</li>
-                    <li>Strong problem-solving skills and teamwork skills.</li>
+                   <?php foreach (explode("\n", $row['Essential Requirements']) as $item): ?>
+                    <?php if (trim($item) !== ''): ?>
+                        <li><?php echo htmlspecialchars(trim($item)); ?></li>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
                 </ul>
                 <h3 >Preferred Qualifications</h3>
                 <ul >
-                    <li>Master's degree in Computer Science, Data Engineering, or a related field.</li>
-                    <li>Experience with Machine Learning and Artificial Intelligence Technologies.</li>
+                    <?php foreach (explode("\n", $row['Preferred Qualifications']) as $item): ?>
+                    <?php if (trim($item) !== ''): ?>
+                        <li><?php echo htmlspecialchars(trim($item)); ?></li>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
                 </ul>
                 </div>
 
                 <aside class="accent-bar2">
-                    <img src="Images/engineer.jpg" alt="Data Engineer" style=" width:100%;">
-                    <p><strong>!! Salary (Full Time): </strong></p>
-                    <p>$4000-$8000 per month + Performance Bonus</p>
+                    <img src="<?php echo htmlspecialchars($row['Images']); ?>" 
+                        alt="<?php echo htmlspecialchars($row['Title']); ?>" style="width:100%;">
+                    <p> <?php echo htmlspecialchars($row['Salary']); ?></p>
                     <p><strong>Reporting to: </strong></p>
-                    <p>Lead Data Engineer and Head of Data & Analytics</p>
+                    <p><?php echo htmlspecialchars($row['Reporting to']); ?></p>
                     <hr>
-                    <button style="margin-top:15px; padding: 20px; width:100%; font-size:18px;"><a href="apply.html">Apply for Data Engineer</a></button>
+                    <button style="margin-top:15px; padding: 20px; width:100%; font-size:18px;">
+                        <a href="apply.php?job_ref=<?php echo urlencode($row['Reference Number']); ?>">
+                            Apply for <?php echo htmlspecialchars($row['Title']); ?>
+                        </a></button>
                 </aside>
             </div>
         </div>
     </section>
     <br><br><br><br><br><br>
-    
-    <section class="job-posting">
-        <div class="pill">Reference Number: TRV27</div>
-        <div class="accent-bar4">
-            <h2><strong>Job Title: IT Support Specialist</strong></h2>
-            <p style="font-size: 22px;">Providing technical support and assistance to end-users, troubleshooting hardware and software issues, and ensuring the smooth operation of IT systems within the organization.</p>
-        <hr>
-            <div class="main-content">
-                <div class="accent-bar3">
-                <h3>Responsibilities</h3>
-                <ol>
-                    <li>Provide technical support to end-users via phone, email, or in-person.</li>
-                    <li>Troubleshoot hardware, software and peripheral issues across the company.</li>
-                    <li>Install, configure, and maintain computer systems and applications.</li>
-                    <li>Monitor IT infrastructure and document support activities and resolutions.</li>
-                </ol>
-                <h3>Essential Requirements</h3>
-                <ul>
-                    <li>Bachelor's degree in Information Technology, Computer Science, or a related field.</li>
-                    <li>Proven experience as an IT Support Specialist or similar role.</li>
-                    <li>Strong knowledge of computer systems, networks, and software applications.</li>
-                    <li>Excellent problem-solving, communication, and teamwork skills.</li>
-                </ul>
-                <h3>Preferred Qualifications</h3>
-                 <ul>
-                    <li>Certifications such as CompTIA A+, Microsoft Certified IT Professional (MCITP), or Cisco Certified Network Associate (CCNA).</li>
-                    <li>Experience with cloud-based technologies and virtualization.</li>
-                </ul>
-                </div>
-
-                <aside class="accent-bar2">
-                    <img src="Images/itspecialist.jpg" alt="IT Specialist" style=" width:100%;">
-                    <p><strong>!! Salary (Full Time): </strong></p>
-                    <p>$3000-$5000 per month + Performance Bonus</p>
-                    <p><strong>Reporting to:</strong></p> 
-                    <p>IT Manager</p>
-                    <hr>
-                    <button style="margin-top:15px; padding: 20px; width:100%; font-size:18px;"><a href="apply.html">Apply for IT Support Specialist</a></button>
-                </aside>
-                </div>
-            </div>
-        </div>
-    </section>
-    <br><br><br><br>
+    <?php endwhile; ?>
+    <?php endif; ?>
         
         <div class="accent-bar5">
             <h3><strong>WHY JOIN US?</strong></h3>
