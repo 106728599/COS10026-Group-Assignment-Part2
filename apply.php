@@ -26,7 +26,7 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
     <div class="apply-intro">
         <h2>Looking For A Job? Sign Up For An Interview!</h2>
     </div>
-    <form method="post" action="https://mercury.swin.edu.au/it000000/formtest.php">
+    <form method="post" action="process_eoi.php">
         <fieldset>
             <legend>Application Form</legend>
             <p><label for="jobRefNum">Job Reference Number: </label>
@@ -99,19 +99,19 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
             <p><strong>Skill List: </strong></p>
             <p class="skillList">
                 <label for="html">HTML</label>
-                <input type="checkbox" id="html" name="issue[]" value="html" checked>
+                <input type="checkbox" id="html" name="skills[]" value="html" checked>
 
                 <label for="css">CSS</label>
-                <input type="checkbox" id="css" name="issue[]" value="css">
+                <input type="checkbox" id="css" name="skills[]" value="css">
 
                 <label for="javaScript">JavaScript</label>
-                <input type="checkbox" id="javaScript" name="issue[]" value="javaScript">
+                <input type="checkbox" id="javaScript" name="skills[]" value="javaScript">
 
                 <label for="php">PHP</label>
-                <input type="checkbox" id="php" name="issue[]" value="php">
+                <input type="checkbox" id="php" name="skills[]" value="php">
 
                 <label for="mysql">MySQL</label>
-                <input type="checkbox" id="mysql" name="issue[]" value="mysql">
+                <input type="checkbox" id="mysql" name="skills[]" value="mysql">
             </p>
             <p class="otherSkillsRow">
                 <label for="otherSkills">Other skills:</label>
@@ -121,7 +121,6 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
         <input type="submit" value="Submit">
         <input type="reset" value="Reset form">
     </form>
-    <h2>Thank You For Applying! We Will Reply Shortly!</h2>
     <img class="apply-banner" src="Images/apply_pic4.jpeg" alt="Travel banner">
     <section class="steps">
         <h2>What Happens After You Apply?</h2>
