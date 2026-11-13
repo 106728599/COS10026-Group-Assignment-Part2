@@ -1,3 +1,7 @@
+<?php
+$job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
+?>
+
 <!DOCTYPE html> 
 <html lang="en">
 <head>
@@ -26,7 +30,7 @@
         <fieldset>
             <legend>Application Form</legend>
             <p><label for="jobRefNum">Job Reference Number: </label>
-                <input type="text" name="jobRefNum" id="jobRefNum" pattern="[a-zA-Z0-9]{5}" required>
+                <input type="text" name="jobRefNum" id="jobRefNum" value="<?php echo $job_ref; ?>" readonly>
             </p>
 
             <p><label for="firstName">First Name: </label>
