@@ -1,3 +1,25 @@
+<?php
+require_once 'settings.php';
+
+$conn = mysqli_connect($host, $user, $pwd, $db);
+
+if (!$conn) die('Database connection failed: ' . mysqli_connect_error());
+mysqli_set_charset($conn, 'utf8mb4');
+
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+if ($search !== '') {
+    $safe = mysqli_real_escape_string($conn, $search);
+    $sql = "SELECT * FROM destinations 
+            WHERE `Country Name` LIKE '%$safe%' 
+               OR `Cities` LIKE '%$safe%' ";
+} else {
+    $sql = "SELECT * FROM destinations";
+}
+$result = mysqli_query($conn, $sql);
+if (!$result) die('Query failed: ' . mysqli_error($conn));
+?>
+
 <!DOCTYPE html> 
 <html lang="en">
 <head>
@@ -70,15 +92,31 @@
 <body>
     <section class="images"></section>
     <h1 style="text-align: center;"><strong>Home</strong></h1>
+
+    <div id="search-destination">
     <h2 style="text-align: center; font-size: 24px;">About Travexa</h2>
     <p style="font-size: 20px;">Travexa is a travel company dedicated to making every journey enjoyable, convenient, and memorable. We provide travel services and carefully planned experiences to help customers discover new destinations, explore different cultures, and create unforgettable memories. Whether it is a relaxing holiday, an exciting adventure, or a family trip, Travexa aims to make travelling easier from planning to the journey itself.</p>
-    <form>
-        <label id="SearchDestination">
-        <input type="text" placeholder="Search destinations">
-        <button type="submit">Search</button>
-        </label>
+
+    <form action="index.php#search-destination" method="GET">
+        <label id="SearchDestination">Enter Destination:</label>
+        <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="e.g., China">
+        <input type="submit" value="Search">
+        <?php if ($search !== ''): ?>
+            <a href="index.php#search-destination" style="margin-left: 10px;">Clear Search</a>
+        <?php endif; ?>
     </form>
     
+    <?php if ($search !== ''): ?>
+        <p style="margin-top: 15px; font-size: 18px;">Showing results for: <strong><?php echo htmlspecialchars($search); ?></strong></p>
+    <?php endif; ?>
+    </div>
+
+    <div>
+
+    <?php if (mysqli_num_rows($result) === 0): ?>
+    <p style="text-align: center; font-size: 20px;">No destination found<?php echo $search !== '' ? ' for "' . htmlspecialchars($search) . '"' : ''; ?>.</p>
+    <?php else: ?>
+
     <div class="MainLayout">
     <nav id="countryNav">
         <h3>Featured Destinations</h3>
@@ -94,168 +132,42 @@
         <br><br><br><br><br>
     </nav>
     <div id="countries">
-        <table>
-            <tr>
-                <th colspan="5" id="Japan">Japan</th>
-            </tr>
-            <tr>
-                <td>Tokyo</td>
-                <td>Hokkaido</td>
-                <td>Osaka</td>
-                <td>Kyoto</td>
-                <td>Shikoku</td>
-            </tr>
-            <tr>
-                <td><img src="Images/tokyo.jpg" alt="Tokyo" width="200" height="200"></td>
-                <td><img src="Images/hokkaido.jpg" alt="Hokkaido" width="200" height="200"></td>
-                <td><img src="Images/osaka.jpg" alt="Osaka" width="200" height="200"></td>
-                <td><img src="Images/kyoto.jpg" alt="Kyoto" width="200" height="200"></td>
-                <td><img src="Images/shikoku.jpg" alt="Shikoku" width="200" height="200"></td>
-            </tr>
-             <tr>
-                <td colspan="5" style="text-align: center;">Blend ancient traditions with modern wonders. From Tokyo's neon lights to Kyoto's serene temples, Japan offers an unforgettable journey.</td>
-            </tr>
-        </table>
-        <br><br><br><br><br><br><br><br><br><br>
-        <table>
-            <tr>
-                <th colspan="5" id="China">China</th>
-            </tr>
-            <tr>
-                <td>Beijing</td>
-                <td>Shanghai</td>
-                <td>Guangzhou</td>
-                <td>Shenzhen</td>
-                <td>Chengdu</td>
-            </tr>
-            <tr>
-                <td><img src="Images/beijing.jpg" alt="Beijing" width="200" height="200"></td>
-                <td><img src="Images/shanghai.jpg" alt="Shanghai" width="200" height="200"></td>
-                <td><img src="Images/guangzhou.jpg" alt="Guangzhou" width="200" height="200"></td>
-                <td><img src="Images/shenzhen.jpg" alt="Shenzhen" width="200" height="200"></td>
-                <td><img src="Images/chengdu.jpg" alt="Chengdu" width="200" height="200"></td>
-            </tr>
-            <tr>
-                <td colspan="5" style="text-align: center;">Ancient wonders meet modern marvels. Explore the Great Wall, bustling megacities, and rich cultural heritage.</td>
-            </tr>
-        </table>
-        <br><br><br><br><br><br><br><br><br><br>
-        <table>
-            <tr>
-                <th colspan="5" id="Greece">Greece</th>
-            </tr>
-            <tr>
-                <td>Athens</td>
-                <td>Thessaloniki</td>
-                <td>Crete</td>
-                <td>Rhodes</td>
-                <td>Corfu</td>
-            </tr>
-             <tr>
-                <td><img src="Images/athens.jpg" alt="Athens" width="200" height="200"></td>
-                <td><img src="Images/thessaloniki.jpg" alt="Thessaloniki" width="200" height="200"></td>
-                <td><img src="Images/crete.jpg" alt="Crete" width="200" height="200"></td>
-                <td><img src="Images/rhodes.jpg" alt="Rhodes" width="200" height="200"></td>
-                <td><img src="Images/corfu.jpg" alt="Corfu" width="200" height="200"></td>
-            </tr>
-             <tr>
-                <td colspan="5"  style="text-align: center;">Where history meets the sea. Discover ancient ruins, sun-drenched islands, and Mediterranean charm.</td>
-            </tr>
-        </table>
-        <br><br><br><br><br><br><br><br><br><br>
-        <table>
-            <tr>
-                <th colspan="5" id="Korea">Korea</th>
-            </tr>
-            <tr>
-                <td>Seoul</td>
-                <td>Busan</td>
-                <td>Jeju Island</td>
-                <td>Incheon</td>
-                <td>Gyeongju</td>
-            </tr>
-             <tr>
-                <td><img src="Images/seoul.jpg" alt="Seoul" width="200" height="200"></td>
-                <td><img src="Images/busan.jpg" alt="Busan" width="200" height="200"></td>
-                <td><img src="Images/jeju_island.jpg" alt="Jeju Island" width="200" height="200"></td>
-                <td><img src="Images/incheon.jpg" alt="Incheon" width="200" height="200"></td>
-                <td><img src="Images/gyeongju.jpg" alt="Gyeongju" width="200" height="200"></td>
-            </tr>
-             <tr>
-                <td colspan="5" style="text-align: center;">Tradition and trend in perfect harmony. Experience vibrant cities, serene temples, and breathtaking island landscapes.</td>
-            </tr>
-        </table>
-        <br><br><br><br><br><br><br><br><br><br>
-        <table>
-            <tr>
-                <th colspan="5" id="Indonesia">Indonesia</th>
-            </tr>
-            <tr>
-                <td>Jakarta</td>
-                <td>Bali</td>
-                <td>Surabaya</td>
-                <td>Medan</td>
-                <td>Bandung</td>
-            </tr>
-              <tr>
-                <td><img src="Images/jakarta.jpg" alt="Jakarta" width="200" height="200"></td>
-                <td><img src="Images/bali.jpg" alt="Bali" width="200" height="200"></td>
-                <td><img src="Images/surabaya.jpg" alt="Surabaya" width="200" height="200"></td>
-                <td><img src="Images/medan.jpg" alt="Medan" width="200" height="200"></td>
-                <td><img src="Images/bandung.jpg" alt="Bandung" width="200" height="200"></td>
-            </tr>
-              <tr>
-                <td colspan="5" style="text-align: center;">A tropical paradise of diverse cultures. From bustling Jakarta to the serene beaches of Bali.</td>
-            </tr>
-        </table>
-        <br><br><br><br><br><br><br><br><br><br>
-        <table>
-            <tr>
-                <th colspan="5" id="UnitedStates">United States</th>
-            </tr>
-            <tr>
-                <td>New York</td>
-                <td>Los Angeles</td>
-                <td>Chicago</td>
-                <td>Miami</td>
-                <td>San Francisco</td>
-            </tr>
-             <tr>
-                <td><img src="Images/new_york.jpg" alt="New York" width="200" height="200"></td>
-                <td><img src="Images/los_angeles.jpg" alt="Los Angeles" width="200" height="200"></td>
-                <td><img src="Images/chicago.jpg" alt="Chicago" width="200" height="200"></td>
-                <td><img src="Images/miami.jpg" alt="Miami" width="200" height="200"></td>
-                <td><img src="Images/san_francisco.jpg" alt="San Francisco" width="200" height="200"></td>
-            </tr>
-             <tr>
-                <td colspan="5" style="text-align: center;">From coast to coast, endless possibilities. Experience iconic cities, stunning national parks, and diverse cultures.</td>
-            </tr>
 
-        </table>
-        <br><br><br><br><br><br><br><br><br><br>
+    <?php while ($row = mysqli_fetch_assoc($result)): 
+     $country = $row['Country Name'];
+     $anchorId = str_replace(' ', '', $country);
+     $cityList = preg_split('/[\n,]+/', $row['Cities']); 
+    ?>
         <table>
             <tr>
-                <th colspan="5" id="Australia">Australia</th>
+                <th colspan="5" id="<?php echo htmlspecialchars($anchorId); ?>">
+                    <?php echo htmlspecialchars($country); ?>
+                </th>
             </tr>
             <tr>
-                <td>Sydney</td>
-                <td>Melbourne</td>
-                <td>Brisbane</td>
-                <td>Perth</td>
-                <td>Adelaide</td>
+                <?php foreach ($cityList as $city): ?>
+                            <td><?php echo htmlspecialchars(trim($city)); ?></td>
+                        <?php endforeach; ?>
             </tr>
             <tr>
-                <td><img src="Images/sydney.jpg" alt="Sydney" width="200" height="200"></td>
-                <td><img src="Images/melbourne.jpg" alt="Melbourne" width="200" height="200"></td>
-                <td><img src="Images/brisbane.jpg" alt="Brisbane" width="200" height="200"></td>
-                <td><img src="Images/perth.jpg" alt="Perth" width="200" height="200"></td>
-                <td><img src="Images/adelaide.jpg" alt="Adelaide" width="200" height="200"></td>
+                <?php foreach ($cityList as $city): 
+                                $city = trim($city);
+                                if(empty($city)) continue; 
+                                $imgName = strtolower(str_replace(' ', '_', $city));
+                ?>
+                <td><img src="Images/<?php echo $imgName; ?>.jpg" alt="<?php echo htmlspecialchars($city); ?>" width="200" height="200"></td>
+                <?php endforeach; ?>
             </tr>
-              <tr>
-                <td colspan="5" style="text-align: center;">Where nature and modern life collide. Explore vibrant cities, stunning beaches, and unique wildlife.</td>
+            <tr>
+                <td colspan="5" style="text-align: center;"><?php echo htmlspecialchars($row['Description']); ?></td>
             </tr>
         </table>
         <br><br><br><br><br><br><br><br><br><br>
+
+        <?php endwhile; ?>
+        <?php endif; ?>
+
+        
     </div>
     </div>
     <?php
