@@ -19,9 +19,17 @@
         }
     </style>
 </head>
+
 <?php
+    include 'settings.php';
+
+    if ($conn2->connect_error) {
+        die("Database connection failed: " . $conn2->connect_error);
+    }
+
     include 'header.inc';
 ?>
+
 <body class="about">
     <img src="Images/about_pic1.jpeg" alt="aboutUsBackground">
     <h1 style="text-align: center;">About Us</h1>
@@ -49,61 +57,48 @@
 
     <h2>Our Members</h2>
 
-    <div id="members">
-        <dl>
-            <dt>Soo Kian Meng</dt>
-            <div class="memberContent">
-                <img src="Images/kianmeng_image.jpeg" alt="Photo of Soo Kian Meng">
+<div id="members">
 
-                <div class="memberText">
-                    <dd class="studentID">Student ID: 106728599</dd>
-                    <dd>Contribution: Worked on merging GitHub and designing the structure for apply.html and about.html.</dd>
-                    <dd>Quote: 不忘初心，方得始终。</dd>
-                    <dd>English: Stay true to your original purpose, and you will reach the end.</dd>
-                </div>
+    <?php
+        $sql = "SELECT * FROM about ORDER BY id ASC";
+        $result = mysqli_query($conn2, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+    ?>
+
+        <div class="memberContent">
+
+            <h3><?php echo htmlspecialchars($row['member_name']); ?></h3>
+
+            <div class="memberText">
+
+                <dd class="studentID">
+                    Student ID: <?php echo htmlspecialchars($row['student_id']); ?>
+                </dd>
+
+                <dd>
+                    Part 1 Contribution:
+                    <?php echo htmlspecialchars($row['part1_contribution']); ?>
+                </dd>
+
+                <dd>
+                    Part 2 Contribution:
+                    <?php echo htmlspecialchars($row['part2_contribution']); ?>
+                </dd>
+
             </div>
 
+        </div>
 
-            <dt>Pang Hui Xin</dt>
-            <div class="memberContent">
-                <img src="Images/huixin_image.jpeg" alt="Photo of Pang Hui Xin">
+    <?php
+            }
+        } else {
+            echo "No member information found.";
+        }
+    ?>
 
-                <div class="memberText">
-                    <dd class="studentID">Student ID: 106728609</dd>
-                    <dd>Contribution: Responsible for header design and CSS styling for apply and about page.</dd>
-                    <dd>Quote: 不要让那些做得不够好的事情定义你。继续前行，继续成长，相信自己正在一点一点变得更好。</dd>
-                    <dd>English: Don't let what you haven't done well define you. Keep going, keep growing, and trust that you're becoming better, little by little.</dd>
-                </div>
-            </div>
-
-
-            <dt>Jarome Loo</dt>
-            <div class="memberContent">
-                <img src="Images/jarome_image.jpeg" alt="Photo of Jarome Loo">
-
-                <div class="memberText">
-                    <dd class="studentID">Student ID: 106729071</dd>
-                    <dd>Contribution: Worked on sorting Jira and designing the structure for index.html and jobs.html.</dd>
-                    <dd>Quote: 大智若愚，大巧若拙。</dd>
-                    <dd>English: Great wisdom looks like folly.</dd>
-                </div>
-            </div>
-
-
-            <dt>Lee Xiao Yan</dt>
-            <div class="memberContent">
-                <img src="Images/xiaoyan_image.jpeg" alt="Photo of Lee Xiao Yan">
-
-                <div class="memberText">
-                    <dd class="studentID">Student ID: 106730934</dd>
-                    <dd>Contribution: Responsible for CSS styling for index and jobs page.</dd>
-                    <dd>Quote: 不积跬步，无以至千里。</dd>
-                    <dd>English: A journey of a thousand miles begins with a single step.</dd>
-                </div>
-            </div>
-
-        </dl>
-    </div>
+</div>
 
     <h2>Group Photo</h2>
     <div id="groupPhoto">
