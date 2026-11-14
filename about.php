@@ -23,8 +23,8 @@
 <?php
     include 'settings.php';
 
-    if ($conn2->connect_error) {
-        die("Database connection failed: " . $conn2->connect_error);
+    if ($conn->connect_error) {
+        die("Database connection failed: " . $conn->connect_error);
     }
 
     include 'header.inc';
@@ -61,7 +61,7 @@
 
     <?php
         $sql = "SELECT * FROM about ORDER BY id ASC";
-        $result = mysqli_query($conn2, $sql);
+        $result = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
