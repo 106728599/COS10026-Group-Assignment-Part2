@@ -145,7 +145,7 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
         </div>
     </section>
 
-    <h2>Any Questions Please Reach Out To Our Recruitment Team At <a href="about.html#contact">Our Contact</a>.</h2>
+    <h2>Any Questions Please Reach Out To Our Recruitment Team At <a href="about.php#contact">Our Contact</a>.</h2>
     <?php
         include 'footer.inc';
     ?>
