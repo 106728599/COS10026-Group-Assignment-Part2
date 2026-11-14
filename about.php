@@ -55,49 +55,68 @@
         </ol>
     </div>
 
-    <h2>Our Members</h2>
-
+<h2>Our Members</h2>
 <div id="members">
-
-    <?php
-        $sql = "SELECT * FROM about ORDER BY id ASC";
-        $result = mysqli_query($conn, $sql);
-
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-    ?>
-
-        <div class="memberContent">
-
-            <h3><?php echo htmlspecialchars($row['member_name']); ?></h3>
-
-            <div class="memberText">
-
-                <dd class="studentID">
-                    Student ID: <?php echo htmlspecialchars($row['student_id']); ?>
-                </dd>
-
-                <dd>
-                    Part 1 Contribution:
-                    <?php echo htmlspecialchars($row['part1_contribution']); ?>
-                </dd>
-
-                <dd>
-                    Part 2 Contribution:
-                    <?php echo htmlspecialchars($row['part2_contribution']); ?>
-                </dd>
-
-            </div>
-
-        </div>
-
-    <?php
+    <dl>
+<?php
+    $sql = "SELECT * FROM about ORDER BY id ASC";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $photo = "";
+            $quote = "";
+            $english = "";
+            if ($row['member_name'] == 'Soo Kian Meng') {
+                $photo = "Images/kianmeng_image.jpeg";
+                $quote = "不忘初心，方得始终。";
+                $english = "Stay true to your original purpose, and you will reach the end.";
             }
-        } else {
-            echo "No member information found.";
+            elseif ($row['member_name'] == 'Pang Hui Xin') {
+                $photo = "Images/huixin_image.jpeg";
+                $quote = "不要让那些做得不够好的事情定义你。继续前行，继续成长，相信自己正在一点一点变得更好。";
+                $english = "Don't let what you haven't done well define you. Keep going, keep growing, and trust that you're becoming better, little by little.";
+            }
+            elseif ($row['member_name'] == 'Jarome Loo') {
+                $photo = "Images/jarome_image.jpeg";
+                $quote = "大智若愚，大巧若拙。";
+                $english = "Great wisdom looks like folly.";
+            }
+            elseif ($row['member_name'] == 'Lee Xiao Yan') {
+                $photo = "Images/xiaoyan_image.jpeg";
+                $quote = "不积跬步，无以至千里。";
+                $english = "A journey of a thousand miles begins with a single step.";
+            }
+?>
+    <dt><?php echo htmlspecialchars($row['member_name']); ?></dt>
+    <div class="memberContent">
+        <img src="<?php echo $photo; ?>" alt="Photo of <?php echo htmlspecialchars($row['member_name']); ?>">
+        <div class="memberText">
+            <dd class="studentID">
+                Student ID: <?php echo htmlspecialchars($row['student_id']); ?>
+            </dd>
+            <dd>
+                Part 1 Contribution:
+                <?php echo htmlspecialchars($row['part1_contribution']); ?>
+            </dd>
+            <dd>
+                Part 2 Contribution:
+                <?php echo htmlspecialchars($row['part2_contribution']); ?>
+            </dd>
+            <dd>
+                Quote: <?php echo htmlspecialchars($quote); ?>
+            </dd>
+            <dd>
+                English: <?php echo htmlspecialchars($english); ?>
+            </dd>
+        </div>
+    </div>
+<?php
         }
-    ?>
-
+    } else {
+        echo "No member information found.";
+    }
+?>
+</dl>
 </div>
 
     <h2>Group Photo</h2>

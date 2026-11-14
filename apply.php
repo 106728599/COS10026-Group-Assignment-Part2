@@ -26,7 +26,7 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
     <div class="apply-intro">
         <h2>Looking For A Job? Sign Up For An Interview!</h2>
     </div>
-    <form method="post" action="process_eoi.php">
+    <form method="post" action="process_eoi.php" novalidate>
         <fieldset>
             <legend>Application Form</legend>
             <p><label for="jobRefNum">Job Reference Number: </label>

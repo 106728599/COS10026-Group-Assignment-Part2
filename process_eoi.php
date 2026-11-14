@@ -1,3 +1,11 @@
+<?php
+    // Check POST request
+    if ($_SERVER["REQUEST_METHOD"] != "POST") {
+        header("Location: apply.php");
+        exit();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
