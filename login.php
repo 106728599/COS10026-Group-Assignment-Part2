@@ -22,6 +22,73 @@ $error = isset($_GET['error']);
     <title>Admin Login - TRAVEXA</title>
 
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #ece5f3;
+        }
+
+        .login-box {
+            width: 350px;
+            max-width: 90%;
+            margin: 100px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #ccc;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+
+    .back-btn {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        padding: 10px;
+        background: #eeeeee;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+.back-btn:hover {
+    background: #dddddd;
+}
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #87719a;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover{
+            background: #6f5c82;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
