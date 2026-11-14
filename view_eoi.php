@@ -25,6 +25,56 @@ $row = $result->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Applicant Details - TRAVEXA</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            padding-top: 0;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .details-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .details-box h1 {
+            color: #17324D;
+        }
+
+        .details-box h2 {
+            color: #6F568E;
+        }
+
+        .details-box p {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            overflow-wrap: anywhere;
+        }
+
+        .details-box strong {
+            display: inline-block;
+            min-width: 160px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #B19ACB;
+            color: #17324D;
+            padding: 12px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .back-btn:hover {
+            background: #9B82BB;
+        }
+    </style>
 </head>
 
 <body>

@@ -97,6 +97,130 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Manager - TRAVEXA</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            padding-top: 0;
+        }
+
+        .manager {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .manager-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .manager-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .manager-brand img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .manager-brand h1 {
+            margin: 0;
+            color: #17324D;
+        }
+
+        .manager-brand p {
+            margin: 5px 0;
+            color: #6F568E;
+        }
+
+        .logout-btn,
+        .manager button,
+        .view-btn {
+            display: inline-block;
+            background: #B19ACB;
+            color: #17324D;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover,
+        .manager button:hover,
+        .view-btn:hover {
+            background: #9B82BB;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .manager form {
+            max-width: none;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        .manager input,
+        .manager select {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        .table-box {
+            overflow-x: auto;
+        }
+
+        .manager table {
+            width: 100%;
+            min-width: 950px;
+            table-layout: auto;
+            border-collapse: collapse;
+        }
+
+        .manager th,
+        .manager td {
+            width: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+            vertical-align: middle;
+            font-size: 14px;
+            word-break: normal;
+            overflow-wrap: normal;
+        }
+
+        .manager th {
+            background: #eee;
+            white-space: nowrap;
+        }
+
+        .manager td form {
+            padding: 0;
+            margin: 0;
+            min-width: 150px;
+        }
+
+        .manager td select {
+            width: auto;
+        }
+
+        .view-btn {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
 <body>
