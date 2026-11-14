@@ -72,7 +72,7 @@
     if (mysqli_stmt_execute($stmt)) {
 
         // generate eoi number
-        $eoiNumber = mysqli_insert_id($conn)
+        $eoiNumber = mysqli_insert_id($conn);
 
         // display eoi number and confirmation
         echo "<h2>Application submitted successfully!</h2>";
