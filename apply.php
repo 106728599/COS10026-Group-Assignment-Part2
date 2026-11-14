@@ -22,6 +22,7 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
 ?>
 <body>
     <section class="apply"></section>
+    <div id="applyjob">
     <h1 style="text-align: center;">Apply</h1>
     <div class="apply-intro">
         <h2>Looking For A Job? Sign Up For An Interview!</h2>
@@ -57,7 +58,7 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
                 <!--"/" is the symbol slash in dd/mm/yyyy and "|" is OR-->
                 <input type="text" name="dateOfBirth" id="dateOfBirth" placeholder="dd/mm/yyyy" pattern="(0[1-9]|[12][0-9]|3[0-1])/(0[1-9]|1[0-2])/(19[0-9]{2}|[2-9][0-9]{3})" required>
             </p>
-            
+          
             <fieldset>
                 <legend>Gender: </legend>
                 <p><label for="male">Male</label>
@@ -121,6 +122,8 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
         <input type="submit" value="Submit">
         <input type="reset" value="Reset form">
     </form>
+     </div>
+
     <img class="apply-banner" src="Images/apply_pic4.jpeg" alt="Travel banner">
     <section class="steps">
         <h2>What Happens After You Apply?</h2>
@@ -144,7 +147,7 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
             <p>Candidates that best fulfill our requirements will be contacted with further information about the position.</p>
         </div>
     </section>
-
+     
     <h2>Any Questions Please Reach Out To Our Recruitment Team At <a href="about.html#contact">Our Contact</a>.</h2>
     <?php
         include 'footer.inc';
