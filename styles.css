@@ -550,6 +550,7 @@ body.about h2#contact {
 
 .memberText {
     flex: 1;
+    min-width: 0;
 }
 
 .memberText dd {

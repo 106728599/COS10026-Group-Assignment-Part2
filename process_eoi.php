@@ -1,3 +1,11 @@
+<?php
+    // Check POST request
+    if ($_SERVER["REQUEST_METHOD"] != "POST") {
+        header("Location: apply.php");
+        exit();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,11 +70,17 @@
 
     // execute SQL statement
     if (mysqli_stmt_execute($stmt)) {
-        echo "Application submitted successfully!";
+
+        // generate eoi number
+        $eoiNumber = mysqli_insert_id($conn)
+
+        // display eoi number and confirmation
+        echo "<h2>Application submitted successfully!</h2>";
+        echo "<p>Your EOI number is: <strong>" . $eoiNumber . "</strong></p>";
     }
     
     else {
-        echo "Application failed to submit.";
+        echo "<h2>Application failed to submit.</h2>";
     }
     
     // close statement and database connection
