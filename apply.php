@@ -1,5 +1,11 @@
 <?php
-$job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
+$job_ref = $_GET['job_ref'] ?? '';
+
+if (!in_array($job_ref, ['TRV26', 'TRV27'], true)) {
+    die("Invalid job reference number.");
+}
+
+$job_ref = htmlspecialchars($job_ref, ENT_QUOTES, 'UTF-8');
 ?>
 
 <!DOCTYPE html> 
@@ -17,10 +23,10 @@ $job_ref = isset($_GET['job_ref']) ? htmlspecialchars($_GET['job_ref']) : '';
         }
     </style>
 </head>
+<body>
 <?php
     include 'header.inc';
 ?>
-<body>
     <section class="apply"></section>
     <div id="applyjob">
     <h1 style="text-align: center;">Apply</h1>
