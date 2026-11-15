@@ -16,6 +16,13 @@
             <a href="https://github.com/106728599/COS10026-Group-Assignment.git">GitHub Repository Link</a>
             <a href="mailto:travexa@gmail.com">Email Us</a>
         </p>
+        <p><strong>Acknowledgement</strong></p>
+        <p class="footerAcknowledgement>
+            <a href="https://www.w3schools.com/php/default.asp">W3Schools</a>
+            <a href="https://chatgpt.com/">ChatGPT</a>
+            <a href="https://gemini.google.com/app">GeminiAI</a>
+        </p>
+        
         <p>&copy; 2026 Travexa. All rights reserved.</p>
     </footer>
 </body>

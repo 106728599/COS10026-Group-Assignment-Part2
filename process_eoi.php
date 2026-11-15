@@ -25,8 +25,8 @@
 
 
 <?php
-    // connect to database
-
+    // connect to database using settings.php
+    require_once 'settings.php';
     $conn = mysqli_connect("localhost", "root", "", "travexa_db");
 
     // check for database connection
@@ -95,8 +95,22 @@ $otherSkills = trim(stripslashes($_POST['otherSkills'] ?? ''));
 // Validate Job Reference Number
 if ($jobRefNum == '') {
     $errors[] = "Job Reference Number: This field is required.";
-} elseif (!in_array($jobRefNum, ['TRV26', 'TRV27'], true)) {
-    $errors[] = "Job Reference Number: Invalid job reference number.";
+} 
+
+else {
+    $checkJobStmt = mysqli_prepare($conn, "SELECT 1 FROM jobs WHERE `Reference Number` = ?");
+    if ($checkJobStmt) {
+        mysqli_stmt_bind_param($checkJobStmt, "s", $jobRefNum);
+        mysqli_stmt_execute($checkJobStmt);
+        mysqli_stmt_store_result($checkJobStmt);
+
+        if (mysqli_stmt_num_rows($checkJobStmt) === 0) {
+            $errors[] = "Job Reference Number: Invalid job reference number.";
+        }
+        mysqli_stmt_close($checkJobStmt);
+    } else {
+        die("Database query preparation failed.");
+    }
 }
 
 // Validate First Name

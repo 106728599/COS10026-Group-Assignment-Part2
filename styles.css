@@ -806,6 +806,16 @@ footer p {
     margin: 12px 0;
     font-size: 18px;
 }
+
+.footerAcknowledgement {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 750px;
+    margin: 0 auto 18px;
+}
+
 /* EOI Confirmation Page */
 
 .eoi-page {
