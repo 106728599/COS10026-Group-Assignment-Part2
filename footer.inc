@@ -17,7 +17,7 @@
             <a href="mailto:travexa@gmail.com">Email Us</a>
         </p>
         <p><strong>Acknowledgement</strong></p>
-        <p class="footerAcknowledgement>
+        <p class="footerAcknowledgement">
             <a href="https://www.w3schools.com/php/default.asp">W3Schools</a>
             <a href="https://chatgpt.com/">ChatGPT</a>
             <a href="https://gemini.google.com/app">GeminiAI</a>
