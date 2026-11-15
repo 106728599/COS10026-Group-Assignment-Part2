@@ -128,10 +128,12 @@ if (!$result) die('Query failed: ' . mysqli_error($conn));
                     <p><strong>Reporting to: </strong></p>
                     <p><?php echo htmlspecialchars($row['Reporting to']); ?></p>
                     <hr>
-                    <button style="margin-top:15px; padding: 20px; width:100%; font-size:18px;">
-                        <a href="apply.php?job_ref=<?php echo urlencode($row['Reference Number']); ?>#applyjob">
-                            Apply for <?php echo htmlspecialchars($row['Title']); ?>
-                        </a></button>
+                    <a href="apply.php?job_ref=<?php echo urlencode($row['Reference Number']); ?>#applyjob">
+                    <button style="margin-top:15px; padding: 20px; width:100%; font-size:18px; cursor:pointer;">
+                        
+                    <u>Apply for <?php echo htmlspecialchars($row['Title']); ?></u>
+                    </button>
+                    </a>
                 </aside>
             </div>
         </div>
