@@ -1,11 +1,27 @@
 <?php
-$job_ref = $_GET['job_ref'] ?? '';
+require_once 'settings.php';
 
-if (!in_array($job_ref, ['TRV26', 'TRV27'], true)) {
-    die("Invalid job reference number.");
+$conn = mysqli_connect($host, $user, $pwd, $db);
+if (!$conn) {
+    die('Database connection failed: ' . mysqli_connect_error());
+}
+mysqli_set_charset($conn, 'utf8mb4');
+
+$sql = "SELECT `Reference Number`, `Title` FROM jobs ORDER BY `Reference Number`";
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    die('Query failed: ' . mysqli_error($conn));
 }
 
-$job_ref = htmlspecialchars($job_ref, ENT_QUOTES, 'UTF-8');
+$available_jobs = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $available_jobs[$row['Reference Number']] = $row['Title'];
+}
+
+$job_ref = isset($_GET['job_ref']) ? trim($_GET['job_ref']) : '';
+if ($job_ref !== '' && !array_key_exists($job_ref, $available_jobs)) {
+    $job_ref = '';
+}
 ?>
 
 <!DOCTYPE html> 
@@ -37,7 +53,14 @@ $job_ref = htmlspecialchars($job_ref, ENT_QUOTES, 'UTF-8');
         <fieldset>
             <legend>Application Form</legend>
             <p><label for="jobRefNum">Job Reference Number: </label>
-                <input type="text" name="jobRefNum" id="jobRefNum" value="<?php echo $job_ref; ?>" readonly>
+                <select name="jobRefNum" id="jobRefNum" required>
+                    <option value="">Please Select</option>
+                    <?php foreach ($available_jobs as $ref => $title): ?>
+                        <option value="<?php echo htmlspecialchars($ref, ENT_QUOTES, 'UTF-8'); ?>" <?php echo ($job_ref === $ref) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($ref, ENT_QUOTES, 'UTF-8'); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </p>
 
             <p><label for="firstName">First Name: </label>
