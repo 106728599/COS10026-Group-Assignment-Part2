@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 
@@ -10,12 +11,21 @@ require_once "settings.php";
 
 $eoi = (int)($_GET['eoi'] ?? 0);
 
-$stmt = $conn->prepare("SELECT * FROM eoi WHERE EOInumber = ?");
-$stmt->bind_param("i", $eoi);
-$stmt->execute();
+$row = null;
 
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
+if ($eoi > 0) {
+    $stmt = $conn->prepare(
+        "SELECT * FROM eoi WHERE EOINumber = ?"
+    );
+
+    $stmt->bind_param("i", $eoi);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +35,7 @@ $row = $result->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Applicant Details - TRAVEXA</title>
     <link rel="stylesheet" href="styles.css">
+
     <style>
         body {
             padding-top: 0;
@@ -88,23 +99,23 @@ $row = $result->fetch_assoc();
         <?php if ($row) { ?>
 
             <p><strong>EOI Number:</strong>
-                <?php echo htmlspecialchars((string)($row['EOInumber'] ?? '')); ?>
+                <?php echo htmlspecialchars((string)($row['EOINumber'] ?? '')); ?>
             </p>
 
             <p><strong>Job Reference:</strong>
-                <?php echo htmlspecialchars($row['job_reference'] ?? ''); ?>
+                <?php echo htmlspecialchars($row['jobRefNum'] ?? ''); ?>
             </p>
 
             <p><strong>First Name:</strong>
-                <?php echo htmlspecialchars($row['first_name'] ?? ''); ?>
+                <?php echo htmlspecialchars($row['firstName'] ?? ''); ?>
             </p>
 
             <p><strong>Last Name:</strong>
-                <?php echo htmlspecialchars($row['last_name'] ?? ''); ?>
+                <?php echo htmlspecialchars($row['lastName'] ?? ''); ?>
             </p>
 
             <p><strong>Date of Birth:</strong>
-                <?php echo htmlspecialchars($row['date_of_birth'] ?? ''); ?>
+                <?php echo htmlspecialchars($row['dateOfBirth'] ?? ''); ?>
             </p>
 
             <p><strong>Gender:</strong>
@@ -112,11 +123,11 @@ $row = $result->fetch_assoc();
             </p>
 
             <p><strong>Street Address:</strong>
-                <?php echo htmlspecialchars($row['street_address'] ?? ''); ?>
+                <?php echo htmlspecialchars($row['streetAddress'] ?? ''); ?>
             </p>
 
             <p><strong>Suburb/Town:</strong>
-                <?php echo htmlspecialchars($row['suburb_town'] ?? ''); ?>
+                <?php echo htmlspecialchars($row['suburbTown'] ?? ''); ?>
             </p>
 
             <p><strong>State:</strong>
@@ -132,7 +143,7 @@ $row = $result->fetch_assoc();
             </p>
 
             <p><strong>Phone:</strong>
-                <?php echo htmlspecialchars($row['phone'] ?? ''); ?>
+                <?php echo htmlspecialchars($row['phoneNumber'] ?? ''); ?>
             </p>
 
             <p><strong>Skills:</strong>
@@ -140,7 +151,7 @@ $row = $result->fetch_assoc();
             </p>
 
             <p><strong>Other Skills:</strong>
-                <?php echo htmlspecialchars($row['other_skills'] ?? ''); ?>
+                <?php echo htmlspecialchars($row['otherSkills'] ?? ''); ?>
             </p>
 
             <p><strong>Status:</strong>
@@ -153,7 +164,9 @@ $row = $result->fetch_assoc();
 
         <?php } ?>
 
-        <a href="manage.php" class="back-btn">Back to HR Manager</a>
+        <a href="manage.php" class="back-btn">
+            Back to HR Manager
+        </a>
 
     </div>
 </div>
@@ -162,6 +175,5 @@ $row = $result->fetch_assoc();
 </html>
 
 <?php
-$stmt->close();
 $conn->close();
 ?>
