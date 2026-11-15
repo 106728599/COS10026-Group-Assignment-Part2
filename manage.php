@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -15,8 +14,8 @@ if (isset($_POST['update'])) {
     $eoi = (int)($_POST['eoi'] ?? 0);
     $status = $_POST['status'] ?? '';
 
-    if ($eoi > 0 && in_array($status, ['New', 'Current', 'Final'])) {
-        $stmt = $conn->prepare("UPDATE eoi SET status = ? WHERE EOInumber = ?");
+    if ($eoi > 0 && in_array($status, ['New', 'Current', 'Final'], true)) {
+        $stmt = $conn->prepare("UPDATE eoi SET status = ? WHERE EOINumber = ?");
         $stmt->bind_param("si", $status, $eoi);
 
         if ($stmt->execute()) {
@@ -33,7 +32,7 @@ if (isset($_POST['delete'])) {
     $deleteJob = trim($_POST['delete_job'] ?? '');
 
     if ($deleteJob != "") {
-        $stmt = $conn->prepare("DELETE FROM eoi WHERE job_reference = ?");
+        $stmt = $conn->prepare("DELETE FROM eoi WHERE jobRefNum = ?");
         $stmt->bind_param("s", $deleteJob);
 
         if ($stmt->execute()) {
@@ -48,28 +47,28 @@ if (isset($_POST['delete'])) {
 
 $job = trim($_GET['job'] ?? '');
 $name = trim($_GET['name'] ?? '');
-$sort = $_GET['sort'] ?? 'EOInumber';
+$sort = $_GET['sort'] ?? 'EOINumber';
 
 $allowedSort = [
-    'EOInumber',
-    'job_reference',
-    'first_name',
-    'last_name',
+    'EOINumber',
+    'jobRefNum',
+    'firstName',
+    'lastName',
     'status'
 ];
 
-if (!in_array($sort, $allowedSort)) {
-    $sort = 'EOInumber';
+if (!in_array($sort, $allowedSort, true)) {
+    $sort = 'EOINumber';
 }
 
 $sql = "SELECT * FROM eoi WHERE 1=1";
 
 if ($job != "") {
-    $sql .= " AND job_reference = ?";
+    $sql .= " AND jobRefNum = ?";
 }
 
 if ($name != "") {
-    $sql .= " AND (first_name LIKE ? OR last_name LIKE ? OR CONCAT(first_name, ' ', last_name) LIKE ?)";
+    $sql .= " AND (firstName LIKE ? OR lastName LIKE ? OR CONCAT(firstName, ' ', lastName) LIKE ?)";
 }
 
 $sql .= " ORDER BY $sort ASC";
@@ -264,10 +263,10 @@ $result = $stmt->get_result();
             <label for="sort">Sort By:</label>
 
             <select id="sort" name="sort">
-                <option value="EOInumber" <?php if ($sort == 'EOInumber') echo 'selected'; ?>>EOI Number</option>
-                <option value="job_reference" <?php if ($sort == 'job_reference') echo 'selected'; ?>>Job Reference</option>
-                <option value="first_name" <?php if ($sort == 'first_name') echo 'selected'; ?>>First Name</option>
-                <option value="last_name" <?php if ($sort == 'last_name') echo 'selected'; ?>>Last Name</option>
+                <option value="EOINumber" <?php if ($sort == 'EOINumber') echo 'selected'; ?>>EOI Number</option>
+                <option value="jobRefNum" <?php if ($sort == 'jobRefNum') echo 'selected'; ?>>Job Reference</option>
+                <option value="firstName" <?php if ($sort == 'firstName') echo 'selected'; ?>>First Name</option>
+                <option value="lastName" <?php if ($sort == 'lastName') echo 'selected'; ?>>Last Name</option>
                 <option value="status" <?php if ($sort == 'status') echo 'selected'; ?>>Status</option>
             </select>
 
@@ -285,7 +284,10 @@ $result = $stmt->get_result();
             <label for="delete_job">Job Reference:</label>
             <input type="text" id="delete_job" name="delete_job" required>
 
-            <button type="submit" name="delete">Delete Applications</button>
+            <button type="submit" name="delete"
+                onclick="return confirm('Are you sure you want to delete all applications for this job reference?');">
+                Delete Applications
+            </button>
 
         </form>
     </div>
@@ -312,17 +314,17 @@ $result = $stmt->get_result();
                     <?php while ($row = $result->fetch_assoc()) { ?>
 
                     <tr>
-                        <td><?php echo htmlspecialchars((string)$row['EOInumber']); ?></td>
-                        <td><?php echo htmlspecialchars($row['job_reference']); ?></td>
-                        <td><?php echo htmlspecialchars($row['first_name']); ?></td>
-                        <td><?php echo htmlspecialchars($row['last_name']); ?></td>
+                        <td><?php echo htmlspecialchars((string)$row['EOINumber']); ?></td>
+                        <td><?php echo htmlspecialchars($row['jobRefNum']); ?></td>
+                        <td><?php echo htmlspecialchars($row['firstName']); ?></td>
+                        <td><?php echo htmlspecialchars($row['lastName']); ?></td>
                         <td><?php echo htmlspecialchars($row['email']); ?></td>
-                        <td><?php echo htmlspecialchars($row['phone']); ?></td>
+                        <td><?php echo htmlspecialchars($row['phoneNumber']); ?></td>
                         <td><?php echo htmlspecialchars($row['status']); ?></td>
 
                         <td>
                             <a class="view-btn"
-                               href="view_eoi.php?eoi=<?php echo (int)$row['EOInumber']; ?>">
+                               href="view_eoi.php?eoi=<?php echo (int)$row['EOINumber']; ?>">
                                 View Details
                             </a>
                         </td>
@@ -331,7 +333,7 @@ $result = $stmt->get_result();
                             <form method="post" action="manage.php">
 
                                 <input type="hidden" name="eoi"
-                                    value="<?php echo (int)$row['EOInumber']; ?>">
+                                    value="<?php echo (int)$row['EOINumber']; ?>">
 
                                 <select name="status">
                                     <option value="New" <?php if ($row['status'] == 'New') echo 'selected'; ?>>New</option>
