@@ -88,7 +88,7 @@ CREATE TABLE `eoi` (
   `streetAddress` varchar(40) NOT NULL,
   `suburbTown` varchar(40) NOT NULL,
   `state` varchar(3) NOT NULL,
-  `postcode` varchar(5) NOT NULL,
+  `postcode` varchar(4) NOT NULL,
   `email` varchar(100) NOT NULL,
   `phoneNumber` varchar(12) NOT NULL,
   `skills` varchar(100) DEFAULT NULL,
